@@ -1,0 +1,41 @@
+{
+  "name": "life_pet_server",
+  "version": "1.0.0",
+  "repository": "https://github.com/Insiro/life_pet_server",
+  "author": "Insiro <leeon@insiro.me>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "yarn tsc -p tsconfig.json",
+    "lint": "yarn eslint \"src/**/*\"",
+    "lint-fix": "yarn lint --fix",
+    "prestart": "yarn build",
+    "start": "yarn start:prod",
+    "start:dev": "yarn nodemon --watch src --ext \"ts tsx\" --delay 100ms --exec \"ts-node src/index.ts\"",
+    "start:prod": "yarn node ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.15",
+    "typeorm": "^0.3.4"
+  },
+  "packageManager": "yarn@3.2.0",
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.16.0",
+    "@yarnpkg/pnpify": "^3.1.1",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.1",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.7.0",
+    "tsc": "^2.0.4",
+    "typescript": "^4.6.3"
+  }
+}
