@@ -5,6 +5,7 @@ import {
   ManyToOne,
   BaseEntity,
 } from "typeorm";
+import { User } from "./users";
 
 @Entity()
 export class Pet extends BaseEntity {
@@ -20,6 +21,8 @@ export class Pet extends BaseEntity {
   level!: number;
   @Column()
   complexity!: 1 | 2 | 3;
+  @ManyToOne(() => User, (user) => user.user_id, { cascade: true })
+  owner!: User;
 }
 
 @Entity()
