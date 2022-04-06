@@ -6,6 +6,7 @@ import {
   BaseEntity,
 } from "typeorm";
 import { User } from "./users";
+import { PetCategory } from "./petCategory";
 
 @Entity()
 export class Pet extends BaseEntity {
@@ -23,24 +24,4 @@ export class Pet extends BaseEntity {
   complexity!: 1 | 2 | 3;
   @ManyToOne(() => User, (user) => user.user_id, { cascade: true })
   owner!: User;
-}
-
-@Entity()
-export class PetCategory extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-  @Column()
-  name!: string;
-  @Column()
-  image1!: string; //require to specifitcation Datatype of Images
-  @Column()
-  image2!: string;
-  @Column()
-  image3!: string;
-  @Column()
-  interaction1!: string;
-  @Column()
-  interaction2!: string;
-  @Column()
-  interaction3!: string;
 }

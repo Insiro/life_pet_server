@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "./users";
+import { AchievementCategory } from "./achivementCategory";
 
 @Entity()
 export class Achievement extends BaseEntity {
@@ -17,14 +18,4 @@ export class Achievement extends BaseEntity {
   category!: AchievementCategory;
   @Column()
   achive_time!: number;
-}
-
-@Entity()
-export class AchievementCategory extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-  @Column()
-  name!: string;
-  @Column()
-  description!: string;
 }
