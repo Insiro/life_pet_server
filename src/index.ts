@@ -2,8 +2,8 @@ import express, { json, Request, Response } from "express";
 import BaseRouter from "./routes";
 import cors from "cors";
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-
+import { createConnection, DataSource } from "typeorm";
+import { dataSourceOption } from "./config";
 const corsOptions: cors.CorsOptions = {
   credentials: true,
   origin: true,
@@ -27,10 +27,10 @@ app.get("*", (req: Request, res: Response) => {
   res.status(404).send({ error: "Not Found" });
 });
 
-createConnection()
-  .then(async (connection) => {
-    await connection.synchronize();
-
+const datasource = new DataSource(dataSourceOption);
+datasource
+  .initialize()
+  .then(() => {
     app.listen(7000);
   })
   .catch((error) => console.log(error));

@@ -1,3 +1,4 @@
+import { DataSource, DataSourceOptions } from "typeorm";
 const {
   TYPEORM_HOST: host,
   TYPEORM_PORT: port,
@@ -6,8 +7,8 @@ const {
   TYPEORM_DB: db,
 } = process.env;
 
-module.exports = {
-  type: "mariadb",
+export const dataSourceOption: DataSourceOptions = {
+  type: "mysql",
   host: host || "localhost",
   port: (port && parseInt(port)) || 3306,
   username: user || "life_pet",
@@ -17,14 +18,4 @@ module.exports = {
   logging: false,
   entities: ["dist/entity/*.ts", "dist/entity/*.js"],
   migrations: ["dist/migration/*.ts", "dist/migration/*.js"],
-  subscribers: ["dist/subscriber/*.ts", "dist/subscriber/*.js"],
-  cli: {
-    entitiesDir: "./src/entity",
-    migrationsDir: "./src/migration",
-    subscribersDir: "./src/subscriber",
-  },
-  migrationRun: true,
-  autoSchemaSync: true,
-  migration: "generate",
-  schema: "sync",
 };
