@@ -1,47 +1,41 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  Timestamp,
-} from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class StructedHabbit extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
-  @Column()
-  sleep!: Timestamp | null;
-  @Column()
-  sleep_target!: Timestamp | null;
-  @Column()
-  awake!: Timestamp | null;
-  @Column()
-  awake_target!: Timestamp | null;
-  @Column()
-  steps!: number | null;
-  @Column()
-  steps_target!: number | null;
-  @Column()
-  health_time!: Timestamp | null;
-  @Column()
-  health_time_target!: Timestamp | null;
-  @Column()
-  study_time!: Timestamp | null;
-  @Column()
-  study_time_target!: Timestamp | null;
   @Column({ type: "time" })
-  morning_time!: Timestamp | null;
+  sleep!: Date | null;
   @Column({ type: "time" })
-  morning_time_target!: Timestamp | null;
+  sleep_target!: Date | null;
+  @Column({ type: "time" })
+  awake!: Date | null;
+  @Column({ type: "time" })
+  awake_target!: Date | null;
   @Column()
-  launch_time!: Timestamp | null;
+  steps!: number;
   @Column()
-  launch_time_target!: Timestamp | null;
-  @Column()
-  dinner_time!: Timestamp | null;
-  @Column()
-  dinner_time_target!: Timestamp | null;
-  @Column()
+  steps_target!: number;
+  @Column({ type: "time" })
+  health_time!: Date | null;
+  @Column({ type: "time" })
+  health_time_target!: Date | null;
+  @Column({ type: "time" })
+  study_time!: Date | null;
+  @Column({ type: "time" })
+  study_time_target!: Date | null;
+  @Column({ type: "time" })
+  morning_time!: Date | null;
+  @Column({ type: "time" })
+  morning_time_target!: Date | null;
+  @Column({ type: "time" })
+  launch_time!: Date | null;
+  @Column({ type: "time" })
+  launch_time_target!: Date | null;
+  @Column({ type: "time" })
+  dinner_time!: Date | null;
+  @Column({ type: "time" })
+  dinner_time_target!: Date | null;
+  @Column({ type: "date" })
   date!: Date;
 }
