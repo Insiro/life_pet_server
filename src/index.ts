@@ -3,7 +3,7 @@ import BaseRouter from "./routes";
 import cors from "cors";
 import "reflect-metadata";
 import { createConnection, DataSource } from "typeorm";
-import { dataSourceOption } from "./config";
+import { AppDataSource } from "./data-source";
 const corsOptions: cors.CorsOptions = {
   credentials: true,
   origin: true,
@@ -27,10 +27,9 @@ app.get("*", (req: Request, res: Response) => {
   res.status(404).send({ error: "Not Found" });
 });
 
-const datasource = new DataSource(dataSourceOption);
-datasource
-  .initialize()
+AppDataSource.initialize()
   .then(() => {
     app.listen(7000);
+    console.log("life pet server initalized");
   })
   .catch((error) => console.log(error));
