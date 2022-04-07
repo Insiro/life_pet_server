@@ -2,8 +2,8 @@ import express, { json, Request, Response } from "express";
 import BaseRouter from "./routes";
 import cors from "cors";
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-
+import { createConnection, DataSource } from "typeorm";
+import { AppDataSource } from "./data-source";
 const corsOptions: cors.CorsOptions = {
   credentials: true,
   origin: true,
@@ -27,10 +27,9 @@ app.get("*", (req: Request, res: Response) => {
   res.status(404).send({ error: "Not Found" });
 });
 
-createConnection()
-  .then(async (connection) => {
-    await connection.synchronize();
-
+AppDataSource.initialize()
+  .then(() => {
     app.listen(7000);
+    console.log("life pet server initalized");
   })
   .catch((error) => console.log(error));
