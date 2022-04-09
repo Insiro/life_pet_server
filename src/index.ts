@@ -17,7 +17,7 @@ app.use(cors(corsOptions));
 app.use(json());
 app.get("/", (req: Request, res: Response) => {
   res.send({
-    msg: "Hello, World!",
+    msg: "Life Pet API",
   });
 });
 
