@@ -1,17 +1,11 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  BaseEntity,
-} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from "typeorm";
 import { User } from "./users";
 import { PetCategory } from "./petCategory";
 
 @Entity()
 export class Pet extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
   @ManyToOne(() => PetCategory, (category) => category.id)
   category!: PetCategory;
   @Column()

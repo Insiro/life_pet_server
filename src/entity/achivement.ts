@@ -1,17 +1,11 @@
-import {
-  Entity,
-  Column,
-  OneToMany,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, Column, OneToMany, BaseEntity, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./users";
 import { AchievementCategory } from "./achivementCategory";
 
 @Entity()
 export class Achievement extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
   @OneToMany(() => User, (user) => user.user_id)
   user!: User;
   @OneToMany(() => AchievementCategory, (cate) => cate.id)

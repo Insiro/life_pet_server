@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 @Entity()
 export class PetCategory extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
   @Column()
   name!: string;
   @Column()

@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class Habbit extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
   @Column()
   target!: number;
   @Column()

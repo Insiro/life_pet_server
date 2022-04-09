@@ -2,7 +2,7 @@ import { Entity, Column, BaseEntity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class AchievementCategory extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
   @Column()
   name!: string;
   @Column()

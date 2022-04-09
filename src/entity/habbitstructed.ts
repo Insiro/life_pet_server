@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class StructedHabbit extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: string;
   @Column({ type: "time" })
   sleep!: Date | null;
   @Column({ type: "time" })
