@@ -14,4 +14,6 @@ export class User extends BaseEntity {
   certificate!: string; //pwd
   @Column()
   name!: string;
+  @Column()
+  salt!: string;
 }
