@@ -55,15 +55,21 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
     if (await check_duplicate_id(data.id)) throw new HttpError(StatusCodes.CONFLICT);
     var salt = Math.round(new Date().valueOf() * Math.random()) + "";
     var hashed_pwd = hash(data.pwd, salt);
-    AppDataSource.manager.createQueryBuilder().insert().into(User).values({
-      user_id: data.id,
-      user_name: data.user_name,
-      email: data.email,
-      call: data.call,
-      name: data.name,
-      salt: salt,
-      certificate: hashed_pwd,
-    });
+    AppDataSource.manager
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values({
+        user_id: data.id,
+        user_name: data.user_name,
+        email: data.email,
+        call: data.call,
+        name: data.name,
+        salt: salt,
+        certificate: hashed_pwd,
+      })
+      .execute();
+    res.status(StatusCodes.CREATED).send();
   } catch (error) {
     next(error);
   }
