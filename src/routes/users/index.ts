@@ -1,16 +1,15 @@
 import { Router } from "express";
-import { pet_list } from "./controller";
+import * as ctl from "./controller";
 
 const userRouter = Router();
 
 //TODO: get User Info
-userRouter.get("/:id");
-//TODO:Delete User
-userRouter.delete("/:id");
+userRouter.get("/:id", ctl.user_info);
+userRouter.delete("/:id", ctl.detele_user);
 //TODO: update User Info
 userRouter.patch("/:id");
 
-userRouter.get("/:id/pet", pet_list);
+userRouter.get("/:id/pet", ctl.pet_list);
 
 //TODO: habbit for User
 userRouter.get("/:id/habbit");
