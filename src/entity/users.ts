@@ -15,7 +15,7 @@ export class User extends BaseEntity {
   @Column()
   certificate!: string; //pwd
   @Column()
-  name!: string;
+  nick_name!: string; // user nickname
   @Column()
   salt!: string;
   passwd_chk(passwd: string): boolean {

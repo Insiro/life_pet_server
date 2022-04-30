@@ -37,7 +37,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
     if (
       !(
         "id" in data &&
-        "name" in data &&
+        "nick_name" in data &&
         "user_name" in data &&
         "email" in data &&
         "call" in data &&
@@ -57,7 +57,7 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
         user_name: data.user_name,
         email: data.email,
         call: data.call,
-        name: data.name,
+        nick_name: data.nick_name,
         salt: salt,
         certificate: hashed_pwd,
       })
