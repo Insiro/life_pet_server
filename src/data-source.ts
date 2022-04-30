@@ -10,7 +10,7 @@ const {
   TYPEORM_DATABASE: db,
 } = process.env;
 const dataSourceOption: DataSourceOptions = {
-  type: "postgres",
+  type: "mysql",
   host: host || "localhost",
   port: (port && parseInt(port)) || 3306,
   username: user || "life_pet",
