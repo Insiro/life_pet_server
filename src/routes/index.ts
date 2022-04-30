@@ -2,15 +2,14 @@ import { Router } from "express";
 import { authRouter } from "./auth";
 import { petRouter } from "./pet";
 import { userRouter } from "./users";
-import { httpErrorHandler } from "./utils";
+import { httpErrorHandler } from "../middleware";
 // Init router and path
 const router = Router();
 
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
 router.use("/pet", petRouter);
-// Error hnadling MiddleWare
-router.use(httpErrorHandler);
+
 
 // Export the base-router
 export default router;

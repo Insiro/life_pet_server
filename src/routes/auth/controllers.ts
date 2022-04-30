@@ -2,22 +2,15 @@ import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AppDataSource } from "../../data-source";
 import { User } from "../../entity/users";
-import { hash, HttpError } from "../utils";
+import { get_user_404, hash, HttpError } from "../../utils";
 import { check_duplicate_id } from "./utils";
 
 const sign: RequestHandler = async (req, res, next): Promise<void> => {
   const { body: data } = req;
   try {
     if (!("id" in data && "pwd" in data)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
-
-    const user = await AppDataSource.manager
-      .createQueryBuilder(User, "user")
-      .where("user.id = :id", { id: data.id })
-      .getOne();
-    if (user === null) throw new HttpError(StatusCodes.UNAUTHORIZED);
-
-    const hashed = hash(data.pwd, user.salt);
-    if (hashed !== user.certificate) throw new HttpError(StatusCodes.UNAUTHORIZED);
+    const user = await get_user_404(data.id);
+    if (!user.passwd_chk(data.pwd)) throw new HttpError(StatusCodes.UNAUTHORIZED);
 
     //TODO: add  JWT
     res.status(StatusCodes.ACCEPTED).send();
@@ -53,8 +46,8 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
     )
       throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
     if (await check_duplicate_id(data.id)) throw new HttpError(StatusCodes.CONFLICT);
-    var salt = Math.round(new Date().valueOf() * Math.random()) + "";
-    var hashed_pwd = hash(data.pwd, salt);
+    let salt = Math.round(new Date().valueOf() * Math.random()) + "";
+    let hashed_pwd = hash(data.pwd, salt);
     AppDataSource.manager
       .createQueryBuilder()
       .insert()

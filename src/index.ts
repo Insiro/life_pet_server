@@ -2,8 +2,9 @@ import express, { json, Request, Response } from "express";
 import BaseRouter from "./routes";
 import cors from "cors";
 import "reflect-metadata";
-import { createConnection, DataSource } from "typeorm";
 import { AppDataSource } from "./data-source";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
+import { httpErrorHandler } from "./middleware";
 const corsOptions: cors.CorsOptions = {
   credentials: true,
   origin: true,
@@ -23,8 +24,12 @@ app.get("/", (req: Request, res: Response) => {
 
 //set Router
 app.use("/api", BaseRouter);
+
+// Error hnadling MiddleWare
+app.use(httpErrorHandler);
+
 app.get("*", (req: Request, res: Response) => {
-  res.status(404).send({ error: "Not Found" });
+  res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
 });
 
 AppDataSource.initialize()
