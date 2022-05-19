@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, BaseEntity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./users";
 @Entity()
 export class Friend extends BaseEntity {

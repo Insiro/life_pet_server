@@ -1,5 +1,4 @@
 import { Entity, Column, BaseEntity, PrimaryColumn } from "typeorm";
-import { AppDataSource } from "../data-source";
 import { hash } from "../utils";
 
 @Entity()
