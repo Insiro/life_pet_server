@@ -23,7 +23,7 @@ export const get_user_404 = async (id: string): Promise<User> => {
   return user;
 };
 export const hash = (pwd: string, salt: string): string => {
-  let hashPassword = crypto
+  const hashPassword = crypto
     .createHash("sha512")
     .update(pwd + salt)
     .digest("hex");

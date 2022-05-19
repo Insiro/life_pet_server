@@ -1,20 +1,20 @@
 import { Router } from "express";
-import * as oth_ctl from "./controller";
-import * as user_ctl from "./user_ctl";
+import * as othCtl from "./controller";
+import * as userCtl from "./user_ctl";
 const userRouter = Router();
 
-userRouter.get("/:id", user_ctl.user_info);
+userRouter.get("/:id", userCtl.user_info);
 
-userRouter.delete("/:id", user_ctl.detele_user);
+userRouter.delete("/:id", userCtl.detele_user);
 
-userRouter.patch("/:id", user_ctl.update_user);
+userRouter.patch("/:id", userCtl.update_user);
 
-userRouter.get("/:id/pet", oth_ctl.pet_list);
+userRouter.get("/:id/pet", othCtl.pet_list);
 
-userRouter.get("/:id/habbit", oth_ctl.habit_list);
+userRouter.get("/:id/habbit", othCtl.habit_list);
 
-userRouter.get("/:id/friend", oth_ctl.friend_list);
+userRouter.get("/:id/friend", othCtl.friend_list);
 
-userRouter.get("/:id/achivement", oth_ctl.achievment_list);
+userRouter.get("/:id/achivement", othCtl.achievment_list);
 
-export { userRouter };
+export default userRouter;

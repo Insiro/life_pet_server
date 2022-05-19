@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authRouter } from "./auth";
 import { petRouter } from "./pet";
-import { userRouter } from "./users";
+import userRouter from "./users";
 import { habitRouter } from "./habits";
 import { achieveRouter } from "./achieve";
 // Init router and path
