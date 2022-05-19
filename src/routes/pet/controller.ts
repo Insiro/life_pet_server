@@ -53,3 +53,20 @@ export const del_pet: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+export const update_pet: RequestHandler = async (req, res, next) => {
+  try {
+    let data = req.body;
+    if (!("cert" in data && "user_id" in data)) throw new HttpError(StatusCodes.UNAUTHORIZED);
+    let user = await get_user_404(data.user_id);
+    if (user.certificate != hash(data.cert, user.salt))
+      throw new HttpError(StatusCodes.UNAUTHORIZED);
+    const pet = await get_pet_404(req.params.id);
+    if ("exp" in data) pet.exp = data.exp;
+    if ("level" in data) pet.level = data.level;
+    if ("intimacy" in data) pet.intimacy = data.intimacy;
+    AppDataSource.manager.save(pet);
+    res.status(StatusCodes.OK).send();
+  } catch (error) {
+    next(error);
+  }
+};

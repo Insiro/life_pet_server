@@ -6,8 +6,7 @@ export const petRouter = Router();
 
 petRouter.post("/", ctl.add_pet);
 petRouter.get("/:id", ctl.pet_info);
-//TODO: Edit Pet
-petRouter.patch("/:id");
+petRouter.patch("/:id", ctl.update_pet);
 petRouter.delete("/:id", ctl.del_pet);
 
 petRouter.all("*", (_, res) => {
