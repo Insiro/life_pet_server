@@ -1,5 +1,6 @@
 import crypto from "crypto";
-import { StatusCodes } from "http-status-codes";
+import { RequestHandler } from "express";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { AppDataSource } from "../data-source";
 import { User } from "../entity/users";
 
@@ -27,4 +28,8 @@ export const hash = (pwd: string, salt: string): string => {
     .update(pwd + salt)
     .digest("hex");
   return hashPassword;
+};
+
+export const notImplmentied: RequestHandler = (_, res) => {
+  res.status(StatusCodes.NOT_IMPLEMENTED).send(ReasonPhrases.NOT_IMPLEMENTED);
 };
