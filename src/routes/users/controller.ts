@@ -4,7 +4,7 @@ import { AppDataSource } from "../../data-source";
 import { Pet } from "../../entity/pet";
 import { User } from "../../entity/users";
 import { Habbit } from "../../entity/habbits";
-import { HttpError, get_user_404, hash } from "../../utils";
+import { HttpError } from "../../utils";
 import { Friend } from "../../entity/friends";
 import { Achievement } from "../../entity/achivement";
 
@@ -47,7 +47,7 @@ export const friend_list: RequestHandler = async (req, res, next) => {
     friend_ids.forEach(async (friend) => {
       let user = await AppDataSource.manager
         .createQueryBuilder(User, "user")
-        .where("user.id =:id", { id: friend.id })
+        .where("user.user_id =:id", { id: friend.id })
         .getOne();
       if (user != null) firends.push(user);
     });
