@@ -11,9 +11,15 @@ const sign: RequestHandler = async (req, res, next): Promise<void> => {
     if (!("id" in data && "pwd" in data)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
     const user = await get_user_404(data.id);
     if (!user.passwd_chk(data.pwd)) throw new HttpError(StatusCodes.UNAUTHORIZED);
-
+    const userObj = {
+      user_id: user.user_id,
+      user_name: user.user_name,
+      email: user.email,
+      call: user.call,
+      nick_name: user.nick_name,
+    };
     //TODO: add  JWT
-    res.status(StatusCodes.ACCEPTED).send();
+    res.status(StatusCodes.ACCEPTED).json(userObj);
   } catch (error) {
     next(error);
   }
