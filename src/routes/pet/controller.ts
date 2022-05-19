@@ -19,7 +19,7 @@ export const add_pet: RequestHandler = async (req, res, next) => {
     pet.level = 1;
     pet.intimacy = 50;
     pet.owner = user;
-    AppDataSource.manager.save(pet);
+    AppDataSource.manager.createQueryBuilder().insert().into(Pet).values(pet);
     res.status(StatusCodes.OK).send();
   } catch (error) {
     next(error);
