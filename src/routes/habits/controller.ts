@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AppDataSource } from "../../data-source";
+import AppDataSource from "../../data-source";
 import { Habbit } from "../../entity/habbits";
 import { get_user_404, HttpError } from "../../utils";
 import { get_habit_404 } from "./utils";

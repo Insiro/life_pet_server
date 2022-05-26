@@ -2,7 +2,7 @@ import express, { json, Request, Response } from "express";
 import BaseRouter from "./routes";
 import cors from "cors";
 import "reflect-metadata";
-import { AppDataSource } from "./data-source";
+import AppDataSource from "./data-source";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { httpErrorHandler } from "./middleware";
 const corsOptions: cors.CorsOptions = {
@@ -34,7 +34,7 @@ app.get("*", (req: Request, res: Response) => {
 
 AppDataSource.initialize()
   .then(() => {
-    app.listen(7000);
+    app.listen(17000);
     console.log("life pet server initalized");
   })
   .catch((error) => console.log(error));

@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { AppDataSource } from "../../data-source";
+import AppDataSource from "../../data-source";
 import { Pet } from "../../entity/pet";
 import { HttpError } from "../../utils";
 

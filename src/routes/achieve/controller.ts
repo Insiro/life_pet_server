@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AppDataSource } from "../../data-source";
+import AppDataSource from "../../data-source";
 import { AchievementCategory } from "../../entity/achivementCategory";
 import { get_achieve_404 } from "./utils";
 

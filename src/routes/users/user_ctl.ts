@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AppDataSource } from "../../data-source";
+import AppDataSource from "../../data-source";
 import { User } from "../../entity/users";
 import { HttpError, get_user_404, hash } from "../../utils";
 

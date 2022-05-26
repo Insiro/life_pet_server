@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { AppDataSource } from "../../data-source";
+import AppDataSource from "../../data-source";
 import { Achievement } from "../../entity/achivement";
 import { HttpError } from "../../utils";
 

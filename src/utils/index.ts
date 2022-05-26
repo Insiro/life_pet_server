@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { RequestHandler } from "express";
 import { ReasonPhrases, StatusCodes } from "http-status-codes";
-import { AppDataSource } from "../data-source";
+import AppDataSource from "../data-source";
 import { User } from "../entity/users";
 
 export class HttpError extends Error {

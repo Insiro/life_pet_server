@@ -21,6 +21,7 @@ const dataSourceOption: DataSourceOptions = {
   entities: ["dist/entity/*.js"],
   migrations: ["dist/migration/*.js"],
   extra: {
+    insecureAuth: true,
     ssl: {
       rejectUnauthorized: false,
     },
@@ -28,4 +29,5 @@ const dataSourceOption: DataSourceOptions = {
   ssl: false,
 };
 
-export const AppDataSource = new DataSource(dataSourceOption);
+const AppDataSource = new DataSource(dataSourceOption);
+export default AppDataSource;
