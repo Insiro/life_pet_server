@@ -28,19 +28,15 @@ const sign: RequestHandler = async (req, res, next): Promise<void> => {
 };
 
 const availableId: RequestHandler = async (req, res, next): Promise<void> => {
-  const { body: data } = req;
+  const query = req.query;
   try {
-    if (!("id" in data)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
-    const result = await check_duplicate_id(data.id);
+    if (!("id" in query)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
+    const result = await check_duplicate_id(query.id as string);
     res.status(200).send(result);
     if (result) throw new HttpError(StatusCodes.CONFLICT);
     res.status(StatusCodes.OK).send();
   } catch (error) {
-    try {
-      next(error);
-    } catch (error) {
-      console.log((error as Error).message);
-    }
+    next(error);
   }
 };
 
