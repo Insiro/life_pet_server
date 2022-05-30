@@ -1,5 +1,5 @@
-import { RequestHandler } from "express";
-import { StatusCodes } from "http-status-codes";
+import { RequestHandler, NextFunction } from "express";
+import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import AppDataSource from "../../data-source";
 import { User } from "../../entity/users";
 import { get_user_404, hash, HttpError } from "../../utils";
@@ -10,9 +10,16 @@ const sign: RequestHandler = async (req, res, next): Promise<void> => {
 
   try {
     if (data == null || !("id" in data) || !("pwd" in data))
-      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
-    const user = await get_user_404(data.id);
-    if (!user.passwd_chk(data.pwd)) throw new HttpError(StatusCodes.UNAUTHORIZED);
+      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, ReasonPhrases.UNPROCESSABLE_ENTITY);
+    let user: User;
+    try {
+      user = await get_user_404(data.id);
+    } catch (error) {
+      throw new HttpError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
+    }
+    if (!user.passwd_chk(data.pwd))
+      throw new HttpError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
+
     const userObj = {
       user_id: data.id,
       user_name: user.user_name,
@@ -27,20 +34,19 @@ const sign: RequestHandler = async (req, res, next): Promise<void> => {
   }
 };
 
-const availableId: RequestHandler = async (req, res, next): Promise<void> => {
+const availableId: RequestHandler = async (req, res, next: NextFunction): Promise<void> => {
   const query = req.query;
   try {
-    if (!("id" in query)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
+    if (!("id" in query))
+      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, ReasonPhrases.UNPROCESSABLE_ENTITY);
     const result = await isAvaiableId(query.id as string);
-    res.status(200).json({ usable: result });
-    if (result) throw new HttpError(StatusCodes.CONFLICT);
-    res.status(StatusCodes.OK).send();
+    res.status(StatusCodes.OK).json({ usable: result });
   } catch (error) {
     next(error);
   }
 };
 
-const register: RequestHandler = async (req, res, next): Promise<void> => {
+const register: RequestHandler = async (req, res, next: NextFunction): Promise<void> => {
   const { body: data } = req;
   try {
     if (
@@ -53,9 +59,9 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
         "pwd" in data
       )
     )
-      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
+      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, ReasonPhrases.UNPROCESSABLE_ENTITY);
     if (!(await isAvaiableId(data.id))) {
-      throw new HttpError(StatusCodes.CONFLICT);
+      throw new HttpError(StatusCodes.CONFLICT, ReasonPhrases.CONFLICT);
     }
     let salt = Math.round(new Date().valueOf() * Math.random()) + "";
     let hashed_pwd = hash(data.pwd, salt);

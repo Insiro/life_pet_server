@@ -19,7 +19,7 @@ export const get_user_404 = async (id: string): Promise<User> => {
     .createQueryBuilder(User, "user")
     .where("user.user_id = :id", { id: id })
     .getOne();
-  if (user == null) throw new HttpError(StatusCodes.NOT_FOUND);
+  if (user == null) throw new HttpError(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
   return user;
 };
 export const hash = (pwd: string, salt: string): string => {

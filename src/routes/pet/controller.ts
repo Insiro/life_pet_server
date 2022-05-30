@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import AppDataSource from "../../data-source";
 import { Pet } from "../../entity/pet";
 import { get_user_404, hash, HttpError } from "../../utils";
@@ -9,7 +9,7 @@ export const add_pet: RequestHandler = async (req, res, next) => {
   try {
     let data = req.body;
     if (!("category" in data && "complexity" in data && "user_id" in data)) {
-      throw new HttpError(StatusCodes.NOT_ACCEPTABLE);
+      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY, ReasonPhrases.UNPROCESSABLE_ENTITY);
     }
     let user = await get_user_404(req.body.user_id);
     let pet = new Pet();
@@ -38,16 +38,19 @@ export const pet_info: RequestHandler = async (req, res, next) => {
 export const del_pet: RequestHandler = async (req, res, next) => {
   try {
     let data = req.body;
-    if (!("cert" in data && "user_id" in data)) throw new HttpError(StatusCodes.UNAUTHORIZED);
+    if (!("cert" in data && "user_id" in data))
+      throw new HttpError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
     let user = await get_user_404(data.user_id);
     if (user.certificate != hash(data.cert, user.salt))
-      throw new HttpError(StatusCodes.UNAUTHORIZED);
+      throw new HttpError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
+
     const del_query = AppDataSource.manager
       .createQueryBuilder()
       .delete()
       .from(Pet)
       .where("id = :id", { id: req.params.id });
-    if (!(await del_query.execute())) throw new HttpError(StatusCodes.NOT_MODIFIED);
+    if (!(await del_query.execute()))
+      throw new HttpError(StatusCodes.NOT_MODIFIED, ReasonPhrases.NOT_MODIFIED);
     res.status(StatusCodes.OK).send();
   } catch (error) {
     next(error);
@@ -56,10 +59,12 @@ export const del_pet: RequestHandler = async (req, res, next) => {
 export const update_pet: RequestHandler = async (req, res, next) => {
   try {
     const data = req.body;
-    if (!("cert" in data && "user_id" in data)) throw new HttpError(StatusCodes.UNAUTHORIZED);
+    if (!("cert" in data && "user_id" in data))
+      throw new HttpError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
     const user = await get_user_404(data.user_id);
     if (user.certificate !== hash(data.cert, user.salt))
-      throw new HttpError(StatusCodes.UNAUTHORIZED);
+      throw new HttpError(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
+
     const pet = await get_pet_404(req.params.id);
     if ("exp" in data) pet.exp = data.exp;
     if ("level" in data) pet.level = data.level;

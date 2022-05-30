@@ -4,7 +4,6 @@ import AppDataSource from "../../data-source";
 import { Pet } from "../../entity/pet";
 import { User } from "../../entity/users";
 import { Habbit } from "../../entity/habbits";
-import { HttpError } from "../../utils";
 import { Friend } from "../../entity/friends";
 import { Achievement } from "../../entity/achivement";
 
@@ -28,9 +27,6 @@ export const habit_list: RequestHandler = async (req, res, next) => {
       .createQueryBuilder(Habbit, "habbit")
       .where("habbit.id =:id", { id: req.params.id })
       .getMany();
-    if (habbits.length == 0) {
-      throw new HttpError(StatusCodes.NOT_FOUND);
-    }
     res.status(StatusCodes.OK).json({ habbits: habbits });
   } catch (error) {
     next(error);
