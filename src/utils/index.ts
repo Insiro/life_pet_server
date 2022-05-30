@@ -6,11 +6,12 @@ import { User } from "../entity/users";
 
 export class HttpError extends Error {
   errorCode: number;
-  msg?: any;
-  constructor(errorCode: StatusCodes, msg?: any, ...args: any) {
-    super(...args);
+  msg: string;
+  constructor(errorCode: StatusCodes, msg?: string) {
+    super(msg);
     this.errorCode = errorCode;
-    this.msg = msg;
+    this.msg = msg ? msg : "";
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 

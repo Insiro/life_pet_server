@@ -25,13 +25,11 @@ app.get("/", (req: Request, res: Response) => {
 //set Router
 app.use("/api", BaseRouter);
 
-// Error hnadling MiddleWare
-app.use(httpErrorHandler);
-
 app.get("*", (req: Request, res: Response) => {
   res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
 });
-
+// Error hnadling MiddleWare
+app.use(httpErrorHandler);
 AppDataSource.initialize()
   .then(() => {
     app.listen(17000);

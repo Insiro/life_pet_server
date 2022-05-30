@@ -6,9 +6,11 @@ import { get_user_404, hash, HttpError } from "../../utils";
 import { check_duplicate_id } from "./utils";
 
 const sign: RequestHandler = async (req, res, next): Promise<void> => {
-  const { body: data } = req;
+  const data = req.body;
+
   try {
-    if (!("id" in data && "pwd" in data)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
+    if (data == null || !("id" in data) || !("pwd" in data))
+      throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
     const user = await get_user_404(data.id);
     if (!user.passwd_chk(data.pwd)) throw new HttpError(StatusCodes.UNAUTHORIZED);
     const userObj = {
@@ -30,10 +32,15 @@ const availableId: RequestHandler = async (req, res, next): Promise<void> => {
   try {
     if (!("id" in data)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
     const result = await check_duplicate_id(data.id);
+    res.status(200).send(result);
     if (result) throw new HttpError(StatusCodes.CONFLICT);
     res.status(StatusCodes.OK).send();
   } catch (error) {
-    next(error);
+    try {
+      next(error);
+    } catch (error) {
+      console.log((error as Error).message);
+    }
   }
 };
 
@@ -69,8 +76,8 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
       })
       .execute();
     res.status(StatusCodes.CREATED).send();
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 

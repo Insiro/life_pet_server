@@ -6,7 +6,6 @@ import { habitRouter } from "./habits";
 import { achieveRouter } from "./achieve";
 // Init router and path
 const router = Router();
-
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
 router.use("/pet", petRouter);
