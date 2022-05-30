@@ -4,13 +4,12 @@ import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import AppDataSource from "../data-source";
 import { User } from "../entity/users";
 
-export class HttpError extends Error {
+export class HttpError {
   errorCode: number;
   msg: string;
   constructor(errorCode: StatusCodes, msg?: string) {
-    super(msg);
     this.errorCode = errorCode;
-    this.msg = msg ? msg : "";
+    this.msg = msg ? msg : "error with " + errorCode;
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
@@ -18,7 +17,7 @@ export class HttpError extends Error {
 export const get_user_404 = async (id: string): Promise<User> => {
   const user = await AppDataSource.manager
     .createQueryBuilder(User, "user")
-    .where("user.id = :id", { id: id })
+    .where("user.user_id = :id", { id: id })
     .getOne();
   if (user == null) throw new HttpError(StatusCodes.NOT_FOUND);
   return user;

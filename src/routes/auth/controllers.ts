@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import AppDataSource from "../../data-source";
 import { User } from "../../entity/users";
 import { get_user_404, hash, HttpError } from "../../utils";
-import { check_duplicate_id } from "./utils";
+import { isAvaiableId } from "./utils";
 
 const sign: RequestHandler = async (req, res, next): Promise<void> => {
   const data = req.body;
@@ -14,7 +14,7 @@ const sign: RequestHandler = async (req, res, next): Promise<void> => {
     const user = await get_user_404(data.id);
     if (!user.passwd_chk(data.pwd)) throw new HttpError(StatusCodes.UNAUTHORIZED);
     const userObj = {
-      user_id: user.user_id,
+      user_id: data.id,
       user_name: user.user_name,
       email: user.email,
       call: user.call,
@@ -31,8 +31,8 @@ const availableId: RequestHandler = async (req, res, next): Promise<void> => {
   const query = req.query;
   try {
     if (!("id" in query)) throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
-    const result = await check_duplicate_id(query.id as string);
-    res.status(200).send(result);
+    const result = await isAvaiableId(query.id as string);
+    res.status(200).json({ usable: result });
     if (result) throw new HttpError(StatusCodes.CONFLICT);
     res.status(StatusCodes.OK).send();
   } catch (error) {
@@ -54,24 +54,21 @@ const register: RequestHandler = async (req, res, next): Promise<void> => {
       )
     )
       throw new HttpError(StatusCodes.UNPROCESSABLE_ENTITY);
-    if (await check_duplicate_id(data.id)) throw new HttpError(StatusCodes.CONFLICT);
+    if (!(await isAvaiableId(data.id))) {
+      throw new HttpError(StatusCodes.CONFLICT);
+    }
     let salt = Math.round(new Date().valueOf() * Math.random()) + "";
     let hashed_pwd = hash(data.pwd, salt);
-    AppDataSource.manager
-      .createQueryBuilder()
-      .insert()
-      .into(User)
-      .values({
-        user_id: data.id,
-        user_name: data.user_name,
-        email: data.email,
-        call: data.call,
-        nick_name: data.nick_name,
-        salt: salt,
-        certificate: hashed_pwd,
-      })
-      .execute();
-    res.status(StatusCodes.CREATED).send();
+    let user = new User();
+    user.user_id = data.id;
+    user.user_name = data.user_name;
+    user.email = data.email;
+    user.call = data.call;
+    user.nick_name = data.nick_name;
+    user.salt = salt;
+    user.certificate = hashed_pwd;
+    AppDataSource.manager.save(user);
+    res.status(StatusCodes.CREATED).send("success");
   } catch (err) {
     next(err);
   }
